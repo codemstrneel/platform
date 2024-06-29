@@ -102,8 +102,12 @@ def createDiagram(rules):
           return Comment(content)
 
       def parse_sequence(content):
-          parts = split_outside_parentheses(content, ' ')
-          return Sequence(*[parse_part(part) for part in parts if part])
+        parts = split_outside_parentheses(content, ' ')
+        parsed_parts = [parse_part(part) for part in parts if part]  # Parse parts first
+        if parsed_parts:  # Check if there are any parsed parts
+            return Sequence(*parsed_parts)
+        else:
+            return Skip()  # Return a Skip object if no parts are found
 
       def parse_part(part):
           part = part.strip()
